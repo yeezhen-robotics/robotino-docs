@@ -89,17 +89,7 @@ Below is a summary of every custom convenience function added to ``bashrc``:
      - Sources the ROS2 workspace ``install/setup.bash`` for the current terminal session.
      - ``srcros2``
 
-ROS2 (Humble)
--------------
-For the official installation guide, refer to the `ROS2 Humble installation documentation <https://docs.ros.org/en/humble/Installation.html>`_.
-
-Sourcing ROS2 (Jammy):
-
-.. code-block:: bash
-
-   source /opt/ros/humble/setup.bash
-
-ROS2 (Noetic)
+ROS1 (Noetic)
 -------------
 For Ubuntu 22.04, ROS1 is no longer supported, therefore you would need to build from source. The method below is recommended but a different method can be used too.
 
@@ -111,3 +101,15 @@ Sourcing ROS1 (Noetic):
 .. code-block:: bash
 
    source ~/ros_catkin_ws/install_isolated/setup.bash
+
+
+ROS2 (Humble)
+-------------
+For the official installation guide, refer to the `ROS2 Humble installation documentation <https://docs.ros.org/en/humble/Installation.html>`_.
+
+Sourcing ROS2 (Jammy):
+
+.. code-block:: bash
+
+   source /opt/ros/humble/setup.bash
+

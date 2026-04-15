@@ -49,8 +49,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Robotino Startup Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#gnu-grub-interface">GNU Grub Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#bash-rc-ctrl-h-to-view-in-home-directory">bash_rc (Ctrl+H to view in home directory)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ros1-noetic">ROS1 (Noetic)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ros2-humble">ROS2 (Humble)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ros2-noetic">ROS2 (Noetic)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="robotino_ros2_setup.html">Setting up the ROS Drivers for the Robotino</a></li>
@@ -190,16 +190,8 @@ just revert the changes.</p>
 </tbody>
 </table>
 </section>
-<section id="ros2-humble">
-<h2>ROS2 (Humble)<a class="headerlink" href="#ros2-humble" title="Link to this heading"></a></h2>
-<p>For the official installation guide, refer to the <a class="reference external" href="https://docs.ros.org/en/humble/Installation.html">ROS2 Humble installation documentation</a>.</p>
-<p>Sourcing ROS2 (Jammy):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>/opt/ros/humble/setup.bash
-</pre></div>
-</div>
-</section>
-<section id="ros2-noetic">
-<h2>ROS2 (Noetic)<a class="headerlink" href="#ros2-noetic" title="Link to this heading"></a></h2>
+<section id="ros1-noetic">
+<h2>ROS1 (Noetic)<a class="headerlink" href="#ros1-noetic" title="Link to this heading"></a></h2>
 <p>For Ubuntu 22.04, ROS1 is no longer supported, therefore you would need to build from source. The method below is recommended but a different method can be used too.</p>
 <ul class="simple">
 <li><p><strong>Repository:</strong> <a class="reference external" href="https://github.com/Akvarion/ros-noetic-full-22.04">ROS1 22.04 Docker Image</a></p></li>
@@ -207,6 +199,14 @@ just revert the changes.</p>
 </ul>
 <p>Sourcing ROS1 (Noetic):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>~/ros_catkin_ws/install_isolated/setup.bash
+</pre></div>
+</div>
+</section>
+<section id="ros2-humble">
+<h2>ROS2 (Humble)<a class="headerlink" href="#ros2-humble" title="Link to this heading"></a></h2>
+<p>For the official installation guide, refer to the <a class="reference external" href="https://docs.ros.org/en/humble/Installation.html">ROS2 Humble installation documentation</a>.</p>
+<p>Sourcing ROS2 (Jammy):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>/opt/ros/humble/setup.bash
 </pre></div>
 </div>
 </section>
