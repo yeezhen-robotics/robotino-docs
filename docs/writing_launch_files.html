@@ -52,7 +52,14 @@
 <li class="toctree-l1"><a class="reference internal" href="lidar_scan_filter.html">Setting up the LIDAR’s Scan Filter (PICS150-01000 Core-1)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logitech_f710_setup.html">Logitech F710 Controller to Robotino in ROS2 Important Setup Steps</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ros1_bridge_setup.html">Installing and Using ros1_bridge</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Writing Launch Files</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Writing Launch Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#desktop-applet-to-tmux-launch-file-pipeline">Desktop Applet to TMUX Launch File Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#desktop-desktop-front-end">.desktop (Desktop Front End)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bash-launch-file-launch-sh-desktop-launch-backend">bash_launch_file / launch.sh (Desktop Launch Backend)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tmux-launch-py-tmux-bash-frontend-functions">tmux_launch.py (Tmux Bash Frontend Functions)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tmux-launch-yaml-tmux-bash-backend">tmux_launch.yaml (Tmux Bash Backend)</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="slam_build_problems.html">Misc: SLAM Build Repo Problems</a></li>
 </ul>
 
@@ -82,13 +89,161 @@
              
   <section id="writing-launch-files">
 <h1>Writing Launch Files<a class="headerlink" href="#writing-launch-files" title="Link to this heading"></a></h1>
-<p>Launch files allow multiple ROS nodes to be set up simultaneously. Workarounds have been found
-by using nodes such as tmux, but this is a guide containing everything learned about launch files.</p>
-<p>Most launch file queries can be answered by ChatGPT (normal outline), but more nuanced
-implementations have to be custom made so that the parts are functional.</p>
-<p>This link guides you through different ways nodes can be written so that launch files can
-launch nodes and other launch files:</p>
+<p>To ensure all ROS nodes can be initialised quickly between experiments, launch files are used.
+The method to launch ROS nodes can vary greatly as different methods can offer their own distinct
+advantage. The Robotino is set up in a way which allows tmux to launch different panels, improving
+the interpretability of what is happening during a run.</p>
+<p>ROS also offers their own version of launch files, which are also used in this PC. It is possible
+to combine multiple nodes in one launch file, although the drawback is that it makes debugging
+difficult. One node can crash randomly and it will subsequently terminate all other nodes from
+launching. This way of setting up launch files is tedious. Unless you are working with extensively
+tested ROS drivers/nodes, there will be no way to test each node individually.</p>
+<p>Therefore, tmux is used (Terminal Multiplexer). It is able to create multiple panels at a time,
+with each running a ROS node individually. By combining the streamlined launch files from ROS2 and
+custom launch files written to interface with tmux, we are able to take advantage of the strengths
+of both approaches.</p>
+<p>Use tmux for a ROS node which you have separately developed or wish to run individually. For
+industry grade software (tested), it is more sound to launch all of their relevant nodes in a tmux
+window and treat the whole launch as one node.</p>
+<p>This link guides you through different ways nodes can be written in ROS2 so that launch files can launch
+nodes and other launch files:</p>
 <p><a class="reference external" href="https://robotics.stackexchange.com/questions/89429/ros2-include-a-launch-file-from-a-launch-file">https://robotics.stackexchange.com/questions/89429/ros2-include-a-launch-file-from-a-launch-file</a></p>
+<section id="desktop-applet-to-tmux-launch-file-pipeline">
+<h2>Desktop Applet to TMUX Launch File Pipeline<a class="headerlink" href="#desktop-applet-to-tmux-launch-file-pipeline" title="Link to this heading"></a></h2>
+<p>The diagram below illustrates the full pipeline from a desktop shortcut through to tmux running
+in ROS2. Each block in the pipeline is covered in its own subsection below.</p>
+<a class="reference internal image-reference" href="_images/Diagramlaunch.png"><img alt="Robotino 3 Robot" class="align-center" src="_images/Diagramlaunch.png" style="width: 90%;" />
+</a>
+</section>
+<section id="desktop-desktop-front-end">
+<h2>.desktop (Desktop Front End)<a class="headerlink" href="#desktop-desktop-front-end" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">.desktop</span></code> file is a Linux desktop entry that acts as a clickable shortcut on the
+Ubuntu desktop. It tells the OS what script to run when the icon is double-clicked, allowing
+anyone to launch the full ROS2 stack without opening a terminal manually.</p>
+<p>An example <code class="docutils literal notranslate"><span class="pre">.desktop</span></code> file is shown below:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Desktop Entry]</span>
+<span class="na">Name</span><span class="o">=</span><span class="s">Robotino Controller</span>
+<span class="na">Exec</span><span class="o">=</span><span class="s">/home/robotino/Desktop/bash_launch_files/robotino_controller.sh</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">Application</span>
+<span class="na">Terminal</span><span class="o">=</span><span class="s">true</span>
+<span class="na">Icon</span><span class="o">=</span><span class="s">/home/robotino/Pictures/Icons/Controller.png</span>
+</pre></div>
+</div>
+</section>
+<section id="bash-launch-file-launch-sh-desktop-launch-backend">
+<h2>bash_launch_file / launch.sh (Desktop Launch Backend)<a class="headerlink" href="#bash-launch-file-launch-sh-desktop-launch-backend" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">launch.sh</span></code> bash script is called by the <code class="docutils literal notranslate"><span class="pre">.desktop</span></code> file. Its job is to set up the
+environment before handing off to the Python tmux launcher, this will include navigating to the
+correct directory, sourcing ROS2, and opening a tmux session.</p>
+<p>An example <code class="docutils literal notranslate"><span class="pre">launch.sh</span></code> is shown below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+
+<span class="c1"># Check if tmux session exists</span>
+<span class="k">if</span><span class="w"> </span>!<span class="w"> </span>tmux<span class="w"> </span>has-session<span class="w"> </span>-t<span class="w"> </span>roboros<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Creating tmux session &#39;roboros&#39;&quot;</span>
+tmux<span class="w"> </span>new-session<span class="w"> </span>-d<span class="w"> </span>-s<span class="w"> </span>roboros
+<span class="k">fi</span>
+
+<span class="c1"># Send the commands to the tmux session</span>
+tmux<span class="w"> </span>send-keys<span class="w"> </span>-t<span class="w"> </span>roboros<span class="w"> </span><span class="s2">&quot;cd ~/ros_ws/tmux_launch_files/robotino-controller&quot;</span><span class="w"> </span>C-m
+tmux<span class="w"> </span>send-keys<span class="w"> </span>-t<span class="w"> </span>roboros<span class="w"> </span><span class="s2">&quot;python3 tmux_yaml.py&quot;</span><span class="w"> </span>C-m
+
+<span class="c1"># Attach to the session</span>
+tmux<span class="w"> </span>attach<span class="w"> </span>-t<span class="w"> </span>roboros
+</pre></div>
+</div>
+</section>
+<section id="tmux-launch-py-tmux-bash-frontend-functions">
+<h2>tmux_launch.py (Tmux Bash Frontend Functions)<a class="headerlink" href="#tmux-launch-py-tmux-bash-frontend-functions" title="Link to this heading"></a></h2>
+<p>The Python launch script reads the YAML configuration file and programmatically constructs
+the tmux session by creating windows, splitting panes, and sending the appropriate ROS2
+commands to each pane.</p>
+<p>An example <code class="docutils literal notranslate"><span class="pre">tmux_launch.py</span></code> is shown below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="c1"># Loading the config file</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_config</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+   <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+      <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c1"># Shortform to discretise subprocess outputs</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_cmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
+   <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">a</span>
+<span class="c1"># Send a command to a certain pane</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">send_command_to_pane</span><span class="p">(</span><span class="n">pane_id</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+   <span class="n">full_cmd</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;tmux send-keys -t </span><span class="si">{</span><span class="n">pane_id</span><span class="si">}</span><span class="s2"> </span><span class="se">\&quot;</span><span class="s2">bash -i -c </span><span class="se">\\\&quot;</span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="se">\\\&quot;\&quot;</span><span class="s2"> C-m&quot;</span>
+   <span class="n">run_cmd</span><span class="p">(</span><span class="n">full_cmd</span><span class="p">)</span>
+
+<span class="c1"># Send a command to a certain pane</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_send_command_to_pane</span><span class="p">(</span><span class="n">pane_id</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+   <span class="n">full_cmd</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;tmux send-keys -t </span><span class="si">{</span><span class="n">pane_id</span><span class="si">}</span><span class="s2"> </span><span class="se">\&quot;</span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="se">\&quot;</span><span class="s2"> Enter&quot;</span>
+   <span class="n">run_cmd</span><span class="p">(</span><span class="n">full_cmd</span><span class="p">)</span>
+
+<span class="c1"># Reset all pane layouts to cater specifically to SLAM</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_layout</span><span class="p">():</span>
+   <span class="c1"># Initial pane is 0</span>
+   <span class="n">run_cmd</span><span class="p">(</span><span class="s2">&quot;tmux kill-pane -a&quot;</span><span class="p">)</span>  <span class="c1"># kill all other panes</span>
+   <span class="n">run_cmd</span><span class="p">(</span><span class="s2">&quot;tmux split-window -h &amp;&amp; tmux split-window -v&quot;</span><span class="p">)</span>  <span class="c1"># split right and vertically</span>
+   <span class="n">run_cmd</span><span class="p">(</span><span class="s2">&quot;tmux select-pane -L &amp;&amp; tmux split-window -v&quot;</span><span class="p">)</span>  <span class="c1"># split left vertically</span>
+   <span class="n">run_cmd</span><span class="p">(</span><span class="s2">&quot;tmux rename-window Robotino_Controller&quot;</span><span class="p">)</span>
+   <span class="n">run_cmd</span><span class="p">(</span><span class="s2">&quot;tmux select-layout tiled&quot;</span><span class="p">)</span>  <span class="c1"># make clean layout</span>
+
+<span class="c1"># Loading all of my ROS_Node Subsystems</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_subsystems</span><span class="p">(</span><span class="n">panes</span><span class="p">,</span><span class="nb">id</span><span class="p">):</span>
+   <span class="c1"># Send commands</span>
+   <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pane</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">panes</span><span class="p">):</span>
+      <span class="k">if</span> <span class="nb">id</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+         <span class="n">send_command_to_pane</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">pane</span><span class="p">[</span><span class="s1">&#39;command&#39;</span><span class="p">])</span>
+      <span class="k">else</span><span class="p">:</span>
+         <span class="n">setup_send_command_to_pane</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">pane</span><span class="p">[</span><span class="s1">&#39;command&#39;</span><span class="p">])</span>
+
+<span class="c1"># Gets the ids of all of the panes</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_pane_ids</span><span class="p">():</span>
+   <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="s2">&quot;tmux list-panes -F &#39;#</span><span class="si">{pane_id}</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+   <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+
+<span class="c1"># Gets the ids of the active pane</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_active_pane_id</span><span class="p">():</span>
+   <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="s2">&quot;tmux display-message -p &#39;#</span><span class="si">{pane_id}</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+   <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+<span class="c1"># Sends the command to all but the active terminal</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">source_ros_and_ads_ws</span><span class="p">(</span><span class="n">sources</span><span class="p">):</span>
+   <span class="n">load_subsystems</span><span class="p">(</span><span class="n">sources</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+   <span class="n">config</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="s2">&quot;tmux_commands.yaml&quot;</span><span class="p">)</span>
+   <span class="n">setup_layout</span><span class="p">()</span>
+   <span class="nb">print</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+   <span class="n">source_ros_and_ads_ws</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;sources&#39;</span><span class="p">])</span>
+   <span class="n">load_subsystems</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;panes&#39;</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="tmux-launch-yaml-tmux-bash-backend">
+<h2>tmux_launch.yaml (Tmux Bash Backend)<a class="headerlink" href="#tmux-launch-yaml-tmux-bash-backend" title="Link to this heading"></a></h2>
+<p>The YAML configuration file defines the structure of the tmux session in a human-readable
+format. Keeping this separate from the Python script means you can change what runs without
+touching any code.</p>
+<p>An example <code class="docutils literal notranslate"><span class="pre">tmux_launch.yaml</span></code> is shown below:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sources</span><span class="p">:</span>
+<span class="w">   </span><span class="c1"># SOURCE Commands</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cd</span><span class="nv"> </span><span class="s">~/ros_ws</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">clear</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">source</span><span class="nv"> </span><span class="s">install/setup.bash&quot;</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cd</span><span class="nv"> </span><span class="s">~/ros_ws</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">clear</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">source</span><span class="nv"> </span><span class="s">install/setup.bash&quot;</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cd</span><span class="nv"> </span><span class="s">~/ros_ws</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">clear</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">source</span><span class="nv"> </span><span class="s">install/setup.bash&quot;</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cd</span><span class="nv"> </span><span class="s">~/ros_ws</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">clear</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">source</span><span class="nv"> </span><span class="s">install/setup.bash&quot;</span>
+<span class="nt">panes</span><span class="p">:</span>
+<span class="w">   </span><span class="c1"># RUN Commands</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ros2</span><span class="nv"> </span><span class="s">run</span><span class="nv"> </span><span class="s">joy</span><span class="nv"> </span><span class="s">joy_node&quot;</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ros2</span><span class="nv"> </span><span class="s">launch</span><span class="nv"> </span><span class="s">rto_bringup</span><span class="nv"> </span><span class="s">rto_bringup_launch.py&quot;</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ros2</span><span class="nv"> </span><span class="s">launch</span><span class="nv"> </span><span class="s">teleop_twist_joy</span><span class="nv"> </span><span class="s">teleop-launch.py&quot;</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ros2</span><span class="nv"> </span><span class="s">launch</span><span class="nv"> </span><span class="s">realsense2_camera</span><span class="nv"> </span><span class="s">rs_launch.py&quot;</span>
+</pre></div>
+</div>
+</section>
 </section>
 
 
