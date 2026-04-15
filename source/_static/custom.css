@@ -1,0 +1,23 @@
+.wrapped-image {
+   float: right;
+   margin: 0 3em 0 1.5em;
+   clear: right;
+   object-fit: cover;
+   max-width: 35%;
+}
+
+table.docutils {
+   table-layout: fixed;
+   width: 100%;
+   white-space: normal;
+}
+
+table.docutils td {
+   word-wrap: break-word;
+   overflow-wrap: break-word;
+   white-space: normal;
+}
+
+table.docutils td:last-child {
+   white-space: nowrap;
+}

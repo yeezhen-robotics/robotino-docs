@@ -1,0 +1,246 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Robotino Startup Guide &mdash; Robotino-PicoScan-Quickstart-Guide 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d2386d5b" />
+
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Setting up the ROS Drivers for the Robotino" href="robotino_ros2_setup.html" />
+    <link rel="prev" title="Robotino Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Robotino-PicoScan-Quickstart-Guide
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Robotino Startup Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#gnu-grub-interface">GNU Grub Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bash-rc-ctrl-h-to-view-in-home-directory">bash_rc (Ctrl+H to view in home directory)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ros2-humble">ROS2 (Humble)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ros2-noetic">ROS2 (Noetic)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="robotino_ros2_setup.html">Setting up the ROS Drivers for the Robotino</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lidar_setup.html">Setting up the LIDAR (PICS150-01000 Core-1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lidar_scan_filter.html">Setting up the LIDAR’s Scan Filter (PICS150-01000 Core-1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logitech_f710_setup.html">Logitech F710 Controller to Robotino in ROS2 Important Setup Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ros1_bridge_setup.html">Installing and Using ros1_bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="writing_launch_files.html">Writing Launch Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="slam_build_problems.html">Misc: SLAM Build Repo Problems</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Robotino-PicoScan-Quickstart-Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Robotino Startup Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/startup_guide.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="robotino-startup-guide">
+<h1>Robotino Startup Guide<a class="headerlink" href="#robotino-startup-guide" title="Link to this heading"></a></h1>
+<a class="reference internal image-reference" href="_images/robotino.jpg"><img alt="Robotino Robot" class="align-center" src="_images/robotino.jpg" style="width: 60%;" />
+</a>
+<section id="gnu-grub-interface">
+<h2>GNU Grub Interface<a class="headerlink" href="#gnu-grub-interface" title="Link to this heading"></a></h2>
+<p>This PC has both 22.04 and the older 16.04 installed together. On startup, you will
+only see the option to boot into 16.04 labelled <code class="docutils literal notranslate"><span class="pre">Ubuntu</span> <span class="pre">16.04</span> <span class="pre">on</span> <span class="pre">sda1</span></code>. To boot
+into 22.04, just pick the first option labelled simply as <strong>Ubuntu</strong> on the startup menu.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By default the user is set as robotino. Uninspiringly, the password is also <code class="docutils literal notranslate"><span class="pre">robotino</span></code>.</p>
+</div>
+</section>
+<section id="bash-rc-ctrl-h-to-view-in-home-directory">
+<h2>bash_rc (Ctrl+H to view in home directory)<a class="headerlink" href="#bash-rc-ctrl-h-to-view-in-home-directory" title="Link to this heading"></a></h2>
+<p>I added a few convenience functions in the secret bash folder that will help with
+initially sourcing ROS and running ROS related operations. <code class="docutils literal notranslate"><span class="pre">bashrc</span></code> is where the
+terminal is configured and if you would like to add your own commands, feel free to.
+It will not modify the system directly and if you did something that broke the terminal,
+just revert the changes.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Given you accidentally lost the file or want to recover it to its original state, a copy is saved in <a class="reference external" href="https://github.com/yeezhen-robotics/Robotino-ROS_WS-Remote/tree/main/config">https://github.com/yeezhen-robotics/Robotino-ROS_WS-Remote/tree/main/config</a></p>
+</div>
+<p>Below is a summary of every custom convenience function added to <code class="docutils literal notranslate"><span class="pre">bashrc</span></code>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 26.3%" />
+<col style="width: 16.2%" />
+<col style="width: 28.3%" />
+<col style="width: 29.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function Name</p></th>
+<th class="head"><p>Software Req.</p></th>
+<th class="head"><p>Usage Description</p></th>
+<th class="head"><p>Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">updt</span></code></p></td>
+<td><p>System</p></td>
+<td><p>Runs <code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">update</span></code> and <code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">upgrade</span></code> together in one command.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">updt</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ta</span></code></p></td>
+<td><p>Tmux</p></td>
+<td><p>Attaches to an existing tmux session by name.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ta</span> <span class="pre">my_session</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tls</span></code></p></td>
+<td><p>Tmux</p></td>
+<td><p>Lists all currently active tmux sessions.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tls</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">tmake</span></code></p></td>
+<td><p>Tmux</p></td>
+<td><p>Creates a new tmux session with a given name.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tmake</span> <span class="pre">my_session</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">talker_listener_example</span></code></p></td>
+<td><p>Tmux / ROS</p></td>
+<td><p>Navigates to the talker-publisher example directory and runs its tmux launch script.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">talker_listener_example</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">runrosbagoval</span></code></p></td>
+<td><p>ROS</p></td>
+<td><p>Plays back the pre-recorded ROS2 bag file for the oval simulation.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">runrosbagoval</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">runrosbagtrackdrive</span></code></p></td>
+<td><p>ROS</p></td>
+<td><p>Plays back the pre-recorded ROS2 bag file for the track drive simulation.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">runrosbagtrackdrive</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">recordros2bag</span></code></p></td>
+<td><p>ROS</p></td>
+<td><p>Sources the ROS2 workspace and records all active topics into a named bag file.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">recordros2bag</span> <span class="pre">my_recording</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tlls</span></code></p></td>
+<td><p>Tmux</p></td>
+<td><p>Lists all available tmux launch file directories in the workspace.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tlls</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rosbagls</span></code></p></td>
+<td><p>ROS</p></td>
+<td><p>Lists all saved ROS2 bag files in the rosbags directory.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rosbagls</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tmuxlaunch</span></code></p></td>
+<td><p>Tmux / ROS</p></td>
+<td><p>Navigates into a named tmux launch file directory and runs its launch script.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tmuxlaunch</span> <span class="pre">my_launch_dir</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">srcros2</span></code></p></td>
+<td><p>ROS</p></td>
+<td><p>Sources the ROS2 workspace <code class="docutils literal notranslate"><span class="pre">install/setup.bash</span></code> for the current terminal session.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">srcros2</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ros2-humble">
+<h2>ROS2 (Humble)<a class="headerlink" href="#ros2-humble" title="Link to this heading"></a></h2>
+<p>For the official installation guide, refer to the <a class="reference external" href="https://docs.ros.org/en/humble/Installation.html">ROS2 Humble installation documentation</a>.</p>
+<p>Sourcing ROS2 (Jammy):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>/opt/ros/humble/setup.bash
+</pre></div>
+</div>
+</section>
+<section id="ros2-noetic">
+<h2>ROS2 (Noetic)<a class="headerlink" href="#ros2-noetic" title="Link to this heading"></a></h2>
+<p>For Ubuntu 22.04, ROS1 is no longer supported, therefore you would need to build from source. The method below is recommended but a different method can be used too.</p>
+<ul class="simple">
+<li><p><strong>Repository:</strong> <a class="reference external" href="https://github.com/Akvarion/ros-noetic-full-22.04">ROS1 22.04 Docker Image</a></p></li>
+<li><p><strong>Setup Guide:</strong> <a class="reference external" href="https://medium.com/&#64;lukas_reisinger/building-ros-noetic-on-ubuntu-22-04-b3ca676c63e7">Medium article by Lukas</a></p></li>
+</ul>
+<p>Sourcing ROS1 (Noetic):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>~/ros_catkin_ws/install_isolated/setup.bash
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Robotino Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="robotino_ros2_setup.html" class="btn btn-neutral float-right" title="Setting up the ROS Drivers for the Robotino" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Bristol Robotics Laboratory.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

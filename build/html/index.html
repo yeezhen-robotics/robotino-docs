@@ -1,0 +1,161 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Robotino Documentation &mdash; Robotino-PicoScan-Quickstart-Guide 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d2386d5b" />
+
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Robotino Startup Guide" href="startup_guide.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            Robotino-PicoScan-Quickstart-Guide
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="startup_guide.html">Robotino Startup Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="robotino_ros2_setup.html">Setting up the ROS Drivers for the Robotino</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lidar_setup.html">Setting up the LIDAR (PICS150-01000 Core-1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lidar_scan_filter.html">Setting up the LIDAR’s Scan Filter (PICS150-01000 Core-1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logitech_f710_setup.html">Logitech F710 Controller to Robotino in ROS2 Important Setup Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ros1_bridge_setup.html">Installing and Using ros1_bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="writing_launch_files.html">Writing Launch Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="slam_build_problems.html">Misc: SLAM Build Repo Problems</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Robotino-PicoScan-Quickstart-Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Robotino Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="robotino-documentation">
+<h1>Robotino Documentation<a class="headerlink" href="#robotino-documentation" title="Link to this heading"></a></h1>
+<div class="line-block">
+<div class="line">By: Yee Zhen | Last Updated: 15/04/2026 11:53</div>
+<div class="line">Tested on/System Default Ubuntu System: Ubuntu 22.04 LTS (Jammy Jellyfish)</div>
+</div>
+<a class="wrapped-image reference internal image-reference" href="_images/robotino.jpg"><img alt="Robotino 3 Robot" class="wrapped-image" src="_images/robotino.jpg" style="width: 60%;" />
+</a>
+<p>This documentation will contain all important documentation regarding this PC’s setup,
+usage as well as any extra extensions made to the underlying ROS architecture.
+All of the code has been tested on the Robotino 3. The documentation will cover the
+expected set up process for the software of the Robotino and the relevant IP addresses
+required to interface with the LIDAR and the Robotino.</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="startup_guide.html">Robotino Startup Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="startup_guide.html#gnu-grub-interface">GNU Grub Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="startup_guide.html#bash-rc-ctrl-h-to-view-in-home-directory">bash_rc (Ctrl+H to view in home directory)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="startup_guide.html#ros2-humble">ROS2 (Humble)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="startup_guide.html#ros2-noetic">ROS2 (Noetic)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="robotino_ros2_setup.html">Setting up the ROS Drivers for the Robotino</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="robotino_ros2_setup.html#error-1-library-dependency-depreciation-not-fatal-but-recommended">ERROR 1 – Library Dependency Depreciation (Not Fatal, but Recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robotino_ros2_setup.html#error-2-missing-dependency-declaration-in-rto-msgs-fatal">ERROR 2 – Missing Dependency Declaration in rto_msgs (FATAL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robotino_ros2_setup.html#error-3-missing-dependency-declaration-in-rto-node-fatal">ERROR 3 – Missing Dependency Declaration in rto_node (FATAL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robotino_ros2_setup.html#recommended-for-odometry-adding-odometry-back-to-the-ros-node">RECOMMENDED FOR ODOMETRY – Adding Odometry Back to the ROS Node</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lidar_setup.html">Setting up the LIDAR (PICS150-01000 Core-1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lidar_scan_filter.html">Setting up the LIDAR’s Scan Filter (PICS150-01000 Core-1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logitech_f710_setup.html">Logitech F710 Controller to Robotino in ROS2 Important Setup Steps</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logitech_f710_setup.html#bug-mouse-issue-when-having-two-dongles-plugged-in-at-once">BUG: Mouse Issue When Having Two Dongles Plugged In at Once</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ros1_bridge_setup.html">Installing and Using ros1_bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="writing_launch_files.html">Writing Launch Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="slam_build_problems.html">Misc: SLAM Build Repo Problems</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="slam_build_problems.html#orbslam3">ORBSLAM3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slam_build_problems.html#badslam">BadSLAM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slam_build_problems.html#re-slam">RE-SLAM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slam_build_problems.html#ceres-solver">Ceres-Solver</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="startup_guide.html" class="btn btn-neutral float-right" title="Robotino Startup Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Bristol Robotics Laboratory.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
