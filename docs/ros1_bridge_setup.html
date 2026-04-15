@@ -1,0 +1,188 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installing and Using ros1_bridge &mdash; Robotino-PicoScan-Quickstart-Guide 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d2386d5b" />
+
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Writing Launch Files" href="writing_launch_files.html" />
+    <link rel="prev" title="Logitech F710 Controller to Robotino in ROS2 Important Setup Steps" href="logitech_f710_setup.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Robotino-PicoScan-Quickstart-Guide
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="startup_guide.html">Robotino Startup Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="robotino_ros2_setup.html">Setting up the ROS Drivers for the Robotino</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lidar_setup.html">Setting up the LIDAR (PICS150-01000 Core-1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lidar_scan_filter.html">Setting up the LIDAR’s Scan Filter (PICS150-01000 Core-1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logitech_f710_setup.html">Logitech F710 Controller to Robotino in ROS2 Important Setup Steps</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing and Using ros1_bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="writing_launch_files.html">Writing Launch Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="slam_build_problems.html">Misc: SLAM Build Repo Problems</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Robotino-PicoScan-Quickstart-Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installing and Using ros1_bridge</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ros1_bridge_setup.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installing-and-using-ros1-bridge">
+<h1>Installing and Using ros1_bridge<a class="headerlink" href="#installing-and-using-ros1-bridge" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">ros1_bridge</span></code> package allows ROS1 and ROS2 nodes to communicate with each other
+over the same network. This is useful when some packages are only available in ROS1
+(Noetic) and need to interface with ROS2 (Humble) nodes.</p>
+<ul class="simple">
+<li><p><strong>Repository:</strong> <a class="reference external" href="https://github.com/ros2/ros1_bridge">ros2/ros1_bridge</a></p></li>
+<li><p><strong>Official Setup Guide:</strong> <a class="reference external" href="https://github.com/ros2/ros1_bridge/blob/master/README.md">ros1_bridge README</a></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ros1_bridge</span></code> must be built from source — it cannot be installed via <code class="docutils literal notranslate"><span class="pre">apt</span></code>
+as it requires both ROS1 and ROS2 to be present on the same machine at build time.</p>
+</div>
+<p>Building ROS2 and ROS1 packages workflow:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ros_ws
+|_ src
+   |_ ROS1
+   |_ ROS2
+</pre></div>
+</div>
+<p>The workspace is split into two subdirectories so that ROS1 and ROS2 packages can be
+built independently without interfering with each other. The build steps must be run
+in the correct order — ROS2 first, then ROS1 — and each must be sourced before building.</p>
+<ol class="arabic simple">
+<li><p>Source Humble</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>/opt/ros/humble/setup.bash
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Build only the ROS2 packages:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install<span class="w"> </span>--packages-ignore-regex<span class="w"> </span>src/ROS1
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Source Noetic:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>~/ros_catkin_ws/install_isolated/setup.bash
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Build only the ROS1 packages:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install<span class="w"> </span>--packages-ignore-regex<span class="w"> </span>src/ROS2
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>Source both workspaces in two separate terminals, then launch the bridge in a third:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Terminal 1 — source ROS1 and run a ROS1 node</span>
+<span class="nb">source</span><span class="w"> </span>~/ros_catkin_ws/install_isolated/setup.bash
+<span class="nb">source</span><span class="w"> </span>~/ros_ws/install/setup.bash
+
+<span class="c1"># Terminal 2 — source ROS2 and run a ROS2 node</span>
+<span class="nb">source</span><span class="w"> </span>/opt/ros/humble/setup.bash
+<span class="nb">source</span><span class="w"> </span>~/ros_ws/install/setup.bash
+
+<span class="c1"># Terminal 3 — launch the bridge</span>
+<span class="nb">source</span><span class="w"> </span>/opt/ros/humble/setup.bash
+<span class="nb">source</span><span class="w"> </span>~/ros_catkin_ws/install_isolated/setup.bash
+<span class="nb">source</span><span class="w"> </span>~/ros_ws/install/setup.bash
+ros2<span class="w"> </span>run<span class="w"> </span>ros1_bridge<span class="w"> </span>dynamic_bridge
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">dynamic_bridge</span></code> automatically creates bridges for any topics that have
+matching publishers and subscribers on both sides. If you only need to bridge
+specific topics, use <code class="docutils literal notranslate"><span class="pre">parameter_bridge</span></code> instead for better performance.</p>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="logitech_f710_setup.html" class="btn btn-neutral float-left" title="Logitech F710 Controller to Robotino in ROS2 Important Setup Steps" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="writing_launch_files.html" class="btn btn-neutral float-right" title="Writing Launch Files" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Bristol Robotics Laboratory.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

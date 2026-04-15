@@ -1,0 +1,369 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setting up the ROS Drivers for the Robotino &mdash; Robotino-PicoScan-Quickstart-Guide 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d2386d5b" />
+
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Setting up the LIDAR (PICS150-01000 Core-1)" href="lidar_setup.html" />
+    <link rel="prev" title="Robotino Startup Guide" href="startup_guide.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Robotino-PicoScan-Quickstart-Guide
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="startup_guide.html">Robotino Startup Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Setting up the ROS Drivers for the Robotino</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#error-1-library-dependency-depreciation-not-fatal-but-recommended">ERROR 1 – Library Dependency Depreciation (Not Fatal, but Recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-2-missing-dependency-declaration-in-rto-msgs-fatal">ERROR 2 – Missing Dependency Declaration in rto_msgs (FATAL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-3-missing-dependency-declaration-in-rto-node-fatal">ERROR 3 – Missing Dependency Declaration in rto_node (FATAL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#recommended-for-odometry-adding-odometry-back-to-the-ros-node">RECOMMENDED FOR ODOMETRY – Adding Odometry Back to the ROS Node</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lidar_setup.html">Setting up the LIDAR (PICS150-01000 Core-1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lidar_scan_filter.html">Setting up the LIDAR’s Scan Filter (PICS150-01000 Core-1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logitech_f710_setup.html">Logitech F710 Controller to Robotino in ROS2 Important Setup Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ros1_bridge_setup.html">Installing and Using ros1_bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="writing_launch_files.html">Writing Launch Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="slam_build_problems.html">Misc: SLAM Build Repo Problems</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Robotino-PicoScan-Quickstart-Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Setting up the ROS Drivers for the Robotino</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/robotino_ros2_setup.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="setting-up-the-ros-drivers-for-the-robotino">
+<h1>Setting up the ROS Drivers for the Robotino<a class="headerlink" href="#setting-up-the-ros-drivers-for-the-robotino" title="Link to this heading"></a></h1>
+<p><em>Done as from</em> 15/04/2026 11:53 <em>. Revert the repository to get the working version that was quoted in the documentation.</em></p>
+<p>The driver port used is <a class="reference external" href="https://github.com/Rahul-K-A/robotino-ros2.git">https://github.com/Rahul-K-A/robotino-ros2.git</a>, a ROS2 wrapper for the
+Robotino developed by Rahul. Since there are no install instructions, given that you
+are setting up his work from a fresh install, there are some dependencies that you have to
+fix before the code will build properly in ROS2.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>/path/to/ROS2/src/file
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Rahul-K-A/robotino-ros2.git
+<span class="nb">cd</span><span class="w"> </span>..
+colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The IP Address of the LIDAR is: <code class="docutils literal notranslate"><span class="pre">172.27.1.1</span></code>, remember to configure it in the computer.</p>
+</div>
+<p>As you may have realised, there will be errors during the building process.
+Here are the steps to fix them one by one:</p>
+<section id="error-1-library-dependency-depreciation-not-fatal-but-recommended">
+<h2>ERROR 1 – Library Dependency Depreciation (Not Fatal, but Recommended)<a class="headerlink" href="#error-1-library-dependency-depreciation-not-fatal-but-recommended" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Starting &gt;&gt;&gt; rto_teleop
+
+/usr/lib/python3/dist-packages/setuptools/dist.py:723: UserWarning:
+Usage of dash-separated &#39;script-dir&#39; will not be supported in future versions.
+Please use the underscore name &#39;script_dir&#39; instead
+
+warnings.warn(
+
+/usr/lib/python3/dist-packages/setuptools/dist.py:723: UserWarning:
+Usage of dash-separated &#39;install-scripts&#39; will not be supported in future versions.
+Please use the underscore name &#39;install_scripts&#39; instead
+
+warnings.warn(
+
+------------------------------------------------------------------------
+
+Finished &lt;&lt;&lt; rto_teleop [0.72s]
+
+--- stderr: rto_bringup
+
+/usr/lib/python3/dist-packages/setuptools/dist.py:723: UserWarning:
+Usage of dash-separated &#39;script-dir&#39; will not be supported in future versions.
+Please use the underscore name &#39;script_dir&#39; instead
+
+warnings.warn(
+
+---
+
+Finished &lt;&lt;&lt; rto_bringup [1.49s]
+</pre></div>
+</div>
+<p><strong>FIX:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span></code> into the <code class="docutils literal notranslate"><span class="pre">rto_bringup</span></code> folder within <code class="docutils literal notranslate"><span class="pre">src</span></code></p></li>
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">rto_bringup/setup.cfg</span></code></p></li>
+<li><p>Make change to line 2: <code class="docutils literal notranslate"><span class="pre">script-dir=$base/lib/rto_bringup</span></code> → <code class="docutils literal notranslate"><span class="pre">script_dir=$base/lib/rto_bringup</span></code></p></li>
+<li><p>Make change to line 4: <code class="docutils literal notranslate"><span class="pre">install-scripts=$base/lib/rto_bringup</span></code> → <code class="docutils literal notranslate"><span class="pre">install_scripts=$base/lib/rto_bringup</span></code></p></li>
+</ul>
+</section>
+<section id="error-2-missing-dependency-declaration-in-rto-msgs-fatal">
+<h2>ERROR 2 – Missing Dependency Declaration in rto_msgs (FATAL)<a class="headerlink" href="#error-2-missing-dependency-declaration-in-rto-msgs-fatal" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>--- stderr: rto_msgs
+
+In file included from /home/robotino/ros_ws/build/rto_msgs/rosidl_generator_c/rto_msgs/msg/detail/north_star_readings__functions.h:19,
+from /home/robotino/ros_ws/build/rto_msgs/rosidl_generator_c/rto_msgs/msg/detail/north_star_readings__functions.c:4:
+
+/home/robotino/ros_ws/build/rto_msgs/rosidl_generator_c/rto_msgs/msg/detail/north_star_readings__struct.h:24:10:
+fatal error: geometry_msgs/msg/detail/pose__struct.h: No such file or directory
+
+24 | #include &quot;geometry_msgs/msg/detail/pose__struct.h&quot;
+   | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+compilation terminated.
+
+gmake[2]: *** [CMakeFiles/rto_msgs__rosidl_generator_c.dir/build.make:457:
+CMakeFiles/rto_msgs__rosidl_generator_c.dir/rosidl_generator_c/rto_msgs/msg/detail/north_star_readings__functions.c.o] Error 1
+
+gmake[1]: *** [CMakeFiles/Makefile2:213: CMakeFiles/rto_msgs__rosidl_generator_c.dir/all] Error 2
+gmake[1]: *** Waiting for unfinished jobs....
+
+In file included from /home/robotino/ros_ws/build/rto_msgs/rosidl_typesupport_cpp/rto_msgs/msg/north_star_readings__type_support.cpp:7:
+
+/home/robotino/ros_ws/build/rto_msgs/rosidl_generator_cpp/rto_msgs/msg/detail/north_star_readings__struct.hpp:22:10:
+fatal error: geometry_msgs/msg/detail/pose__struct.hpp: No such file or directory
+
+22 | #include &quot;geometry_msgs/msg/detail/pose__struct.hpp&quot;
+   | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+compilation terminated.
+
+gmake[2]: *** [CMakeFiles/rto_msgs__rosidl_typesupport_cpp.dir/build.make:270:
+CMakeFiles/rto_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/rto_msgs/msg/north_star_readings__type_support.cpp.o] Error 1
+
+gmake[2]: *** Waiting for unfinished jobs....
+
+...
+
+Failed &lt;&lt;&lt; rto_msgs [4.68s, exited with code 2]
+</pre></div>
+</div>
+<p><strong>FIX</strong> – Add back the geometry_msgs dependency in <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span></code> into the <code class="docutils literal notranslate"><span class="pre">rto_msgs</span></code> folder within <code class="docutils literal notranslate"><span class="pre">src</span></code></p></li>
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">rto_msgs/CMakeLists.txt</span></code></p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">find_package(geometry_msgs</span> <span class="pre">REQUIRED)</span></code> underneath <code class="docutils literal notranslate"><span class="pre">find_package(ament_lint_auto</span> <span class="pre">REQUIRED)</span></code></p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">DEPENDENCIES</span> <span class="pre">geometry_msgs</span></code> underneath <code class="docutils literal notranslate"><span class="pre">DEPENDENCIES</span> <span class="pre">builtin_interfaces</span></code> (near the end of the file)</p></li>
+</ul>
+</section>
+<section id="error-3-missing-dependency-declaration-in-rto-node-fatal">
+<h2>ERROR 3 – Missing Dependency Declaration in rto_node (FATAL)<a class="headerlink" href="#error-3-missing-dependency-declaration-in-rto-node-fatal" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>--- stderr: rto_node
+
+/home/robotino/ros_ws/src/robotino-ros2/rto_node/src/OdometryROS.cpp:11:10:
+fatal error: tf2_geometry_msgs/tf2_geometry_msgs.h: No such file or directory
+
+11 | #include &quot;tf2_geometry_msgs/tf2_geometry_msgs.h&quot;
+   | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+compilation terminated.
+
+gmake[2]: *** [CMakeFiles/rto_node.dir/build.make:230:
+CMakeFiles/rto_node.dir/src/OdometryROS.cpp.o] Error 1
+
+gmake[2]: *** Waiting for unfinished jobs....
+
+gmake[1]: *** [CMakeFiles/Makefile2:141: CMakeFiles/rto_node.dir/all] Error 2
+
+gmake: *** [Makefile:146: all] Error 2
+
+---
+
+Failed &lt;&lt;&lt; rto_node [6.11s, exited with code 2]
+</pre></div>
+</div>
+<p><strong>FIX</strong> – Add back the tf2 dependency in <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span></code> into the <code class="docutils literal notranslate"><span class="pre">rto_node</span></code> folder within <code class="docutils literal notranslate"><span class="pre">src</span></code></p></li>
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">rto_node/CMakeLists.txt</span></code></p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">find_package(tf2_geometry_msgs</span> <span class="pre">REQUIRED)</span></code> underneath <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">find</span> <span class="pre">dependencies</span></code> alongside the other dependencies</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">tf2_ros::tf2_ros</span></code> into <code class="docutils literal notranslate"><span class="pre">target_link_libraries</span></code>:</p></li>
+</ul>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">target_link_libraries</span><span class="p">(</span>
+<span class="w">  </span><span class="s">rto_node</span>
+<span class="w">  </span><span class="o">${</span><span class="nv">REC_ROBOTINO_API2_LIBRARY</span><span class="o">}</span>
+<span class="w">  </span><span class="s">tf2_ros::tf2_ros</span><span class="w">  </span><span class="c"># Something like this</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Right under <code class="docutils literal notranslate"><span class="pre">target_link_libraries</span></code>, add the tf2 library to the dependency list:</p></li>
+</ul>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ament_target_dependencies</span><span class="p">(</span><span class="s">rto_node</span><span class="w"> </span><span class="s">rclcpp</span><span class="w"> </span><span class="s">rto_msgs</span><span class="w"> </span><span class="s">std_msgs</span><span class="w"> </span><span class="s">geometry_msgs</span><span class="w"> </span><span class="s">sensor_msgs</span><span class="w"> </span><span class="s">tf2</span><span class="w"> </span><span class="s">tf2_ros</span><span class="w"> </span><span class="s">tf2_geometry_msgs</span><span class="w"> </span><span class="s">nav_msgs</span><span class="w"> </span><span class="s">builtin_interfaces</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>That should be all the errors. You may have standard errors (akin to warnings) pop up but
+they will be gone the next time you do <code class="docutils literal notranslate"><span class="pre">colcon</span> <span class="pre">build</span></code>. To control with the standard teleop
+ros node, remember to remap <code class="docutils literal notranslate"><span class="pre">cmd_vel</span></code> to <code class="docutils literal notranslate"><span class="pre">/rto3/cmd_vel</span></code> on the robotino (or whatever
+your <code class="docutils literal notranslate"><span class="pre">cmd_vel</span></code> is called).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># To read more on setting up the robotino link to ethernet:</span>
+<span class="c1"># https://ip.festo-didactic.com/Infoportal/Robotino3/Hardware/Interfaces/EN/Ethernet.html</span>
+
+ros2<span class="w"> </span>launch<span class="w"> </span>rto_bringup<span class="w"> </span>rto_bringup_launch.py<span class="w"> </span>hostname:<span class="o">=</span><span class="m">172</span>.27.1.1
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>teleop_twist_keyboard<span class="w"> </span>teleop_twist_keyboard<span class="w"> </span>--ros-args<span class="w"> </span>--remap<span class="w"> </span>cmd_vel:<span class="o">=</span>/rto3/cmd_vel
+</pre></div>
+</div>
+</section>
+<section id="recommended-for-odometry-adding-odometry-back-to-the-ros-node">
+<h2>RECOMMENDED FOR ODOMETRY – Adding Odometry Back to the ROS Node<a class="headerlink" href="#recommended-for-odometry-adding-odometry-back-to-the-ros-node" title="Link to this heading"></a></h2>
+<p>When the Git repository is initially built, the odometry is weirdly not included in the
+build files, meaning ROS2 is just unable to output the odometry of the vehicle. To fix
+this follow the steps below.</p>
+<p>The person maintaining the repository has the odometry node disabled — we need to
+re-enable it. Navigate to: <code class="docutils literal notranslate"><span class="pre">/src/robotino-ros2/rto_node/src</span></code></p>
+<p><strong>Step 1</strong> – Re-enable the odometry node constructor (<code class="docutils literal notranslate"><span class="pre">RTOOdometryNode.cpp</span></code>):</p>
+<p>Change <strong>FROM</strong>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">RTOOdometryNode</span><span class="o">::</span><span class="n">RTOOdometryNode</span><span class="p">()</span><span class="o">:</span>
+<span class="n">Node</span><span class="p">(</span><span class="s">&quot;rto_odometry_node&quot;</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">declare_parameter</span><span class="p">(</span><span class="s">&quot;hostname&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;172.26.1.1&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">hostname_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">get_parameter</span><span class="p">(</span><span class="s">&quot;hostname&quot;</span><span class="p">).</span><span class="n">as_string</span><span class="p">();</span>
+<span class="w">  </span><span class="n">com_</span><span class="p">.</span><span class="n">setName</span><span class="p">(</span><span class="s">&quot;Odometry&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">initModules</span><span class="p">();</span>
+<span class="w">  </span><span class="n">timer_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">create_wall_timer</span><span class="p">(</span><span class="mi">200</span><span class="n">ms</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">bind</span><span class="p">(</span><span class="o">&amp;</span><span class="n">RTOOdometryNode</span><span class="o">::</span><span class="n">spin</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">))</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Change <strong>TO</strong>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">RTOOdometryNode</span><span class="o">::</span><span class="n">RTOOdometryNode</span><span class="p">()</span><span class="o">:</span>
+<span class="n">Node</span><span class="p">(</span><span class="s">&quot;rto_odometry_node&quot;</span><span class="p">),</span>
+<span class="n">com_</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">declare_parameter</span><span class="p">(</span><span class="s">&quot;hostname&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;172.27.1.1&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">hostname_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">get_parameter</span><span class="p">(</span><span class="s">&quot;hostname&quot;</span><span class="p">).</span><span class="n">as_string</span><span class="p">();</span>
+<span class="w">  </span><span class="n">com_</span><span class="p">.</span><span class="n">setName</span><span class="p">(</span><span class="s">&quot;Odometry&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">odometry_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">OdometryROS</span><span class="o">&gt;</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="w">  </span><span class="n">initModules</span><span class="p">();</span>
+<span class="w">  </span><span class="n">timer_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">create_wall_timer</span><span class="p">(</span><span class="mi">200</span><span class="n">ms</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">bind</span><span class="p">(</span><span class="o">&amp;</span><span class="n">RTOOdometryNode</span><span class="o">::</span><span class="n">spin</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Step 2</strong> – Update <code class="docutils literal notranslate"><span class="pre">initModules()</span></code> to register the odometry with ComROS:</p>
+<p>Change <strong>FROM</strong>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">RTOOdometryNode::initModules</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">com_</span><span class="p">.</span><span class="n">setAddress</span><span class="p">(</span><span class="n">hostname_</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+<span class="w">  </span><span class="c1">// Set the ComIds</span>
+<span class="w">  </span><span class="n">odometry_</span><span class="p">.</span><span class="n">setComId</span><span class="p">(</span><span class="n">com_</span><span class="p">.</span><span class="n">id</span><span class="p">());</span>
+<span class="w">  </span><span class="n">com_</span><span class="p">.</span><span class="n">connectToServer</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Change <strong>TO</strong>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">RTOOdometryNode::initModules</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">com_</span><span class="p">.</span><span class="n">setAddress</span><span class="p">(</span><span class="n">hostname_</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+<span class="w">  </span><span class="c1">// Set the ComIds</span>
+<span class="w">  </span><span class="n">odometry_</span><span class="o">-&gt;</span><span class="n">setComId</span><span class="p">(</span><span class="n">com_</span><span class="p">.</span><span class="n">id</span><span class="p">());</span>
+<span class="w">  </span><span class="n">com_</span><span class="p">.</span><span class="n">connectToServer</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">// Reset my Odometry</span>
+<span class="w">  </span><span class="n">odometry_</span><span class="o">-&gt;</span><span class="n">set</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">// Let ComROS know about the odometry object</span>
+<span class="w">  </span><span class="n">com_</span><span class="p">.</span><span class="n">registerOdometry</span><span class="p">(</span><span class="n">odometry_</span><span class="p">.</span><span class="n">get</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Step 3</strong> – Add the odometry node to the main launch file at
+<code class="docutils literal notranslate"><span class="pre">/src/robotino-ros2/rto_bringup/launch/rto_bringup_launch.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Node</span><span class="p">(</span>
+  <span class="n">package</span><span class="o">=</span><span class="s1">&#39;rto_node&#39;</span><span class="p">,</span>
+  <span class="n">namespace</span><span class="o">=</span><span class="s1">&#39;rto3&#39;</span><span class="p">,</span>
+  <span class="n">executable</span><span class="o">=</span><span class="s1">&#39;rto_odometry_node&#39;</span><span class="p">,</span>
+  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rto_odom&#39;</span><span class="p">,</span>
+  <span class="n">parameters</span><span class="o">=</span><span class="p">[{</span><span class="s1">&#39;hostname&#39;</span><span class="p">:</span> <span class="n">LaunchConfiguration</span><span class="p">(</span><span class="s2">&quot;hostname&quot;</span><span class="p">)}]</span>
+<span class="p">),</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can also remove other unused nodes such as the laserscanner to make sure that no
+unexpected nodes are interfering with the ROS network.</p>
+</div>
+<p>With these steps you should now see the odometry node passing data as usual.</p>
+<p>Enjoy playing with the Robotino!</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="startup_guide.html" class="btn btn-neutral float-left" title="Robotino Startup Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="lidar_setup.html" class="btn btn-neutral float-right" title="Setting up the LIDAR (PICS150-01000 Core-1)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Bristol Robotics Laboratory.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
