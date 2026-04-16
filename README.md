@@ -1,11 +1,15 @@
 # Robotino ROS2 Documentation
 
+<div align="center">
+
 [![Documentation](https://img.shields.io/badge/docs-online-blue)](https://yeezhen-robotics.github.io/robotino-docs/)
 ![ROS2](https://img.shields.io/badge/ROS2-Humble-brightgreen)
 ![Ubuntu](https://img.shields.io/badge/Ubuntu-22.04-orange)
 ![Built with Sphinx](https://img.shields.io/badge/Built%20with-Sphinx-informational)
 
-Documentation for the Robotino 3 ROS2 setup, written and maintained by Yee Zhen. This covers the full software setup of the Robotino 3 platform including ROS2 integration, LIDAR configuration, controller setup, and known build issues encountered during development.
+</div>
+
+Documentation for the Robotino 3 ROS2 setup. This covers the full software setup of the Robotino 3 platform including ROS2 integration, LIDAR configuration, controller setup, and known build issues encountered during development.
 
 📖 **[View the live documentation here](https://yeezhen-robotics.github.io/robotino-docs/)**
 
