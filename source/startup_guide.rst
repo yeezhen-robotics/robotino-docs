@@ -28,7 +28,7 @@ just revert the changes.
 
 .. note::
 
-   Given you accidentally lost the file or want to recover it to its original state, a copy is saved in https://github.com/yeezhen-robotics/Robotino-ROS_WS-Remote/tree/main/config
+   If you lost the file or wish to recover it to its original state, a backup can be found in https://github.com/yeezhen-robotics/Robotino-ROS_WS-Remote/tree/main/config
 
 Below is a summary of every custom convenience function added to ``bashrc``:
 
